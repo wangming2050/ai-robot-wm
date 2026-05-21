@@ -1,7 +1,7 @@
 # week5作业记录：
 
 ## 第五周课程内容：
-### 课程内容1：在程序里感受坐标系
+### 课程内容1：Linux 目录操作与机器人运动学
 
 
 
@@ -11,5 +11,5 @@
 ## 作业成果：
 ### 作业1：操作机械臂进行画圆、进行画直线
 
-![alt text](../img/week5/Draw_circles.png)
-<video controls src="../img/week5/move.mp4" title="Title"></video>
+![Draw_circles.png](../img/week5/Draw_circles.png)
+[move.mp4](../img/week5/move.mp4)

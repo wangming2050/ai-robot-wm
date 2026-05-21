@@ -7,4 +7,4 @@
 
 ## 作业成果：
 ### 作业1：在程序中将机器人翻到
-![alt text](../img/week4/bullet.png)
+![bullet.png](../img/week4/bullet.png)

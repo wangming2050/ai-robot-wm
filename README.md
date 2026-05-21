@@ -9,23 +9,29 @@
 
 ## 课程作业目录
 
-[Week 2：WSL、Ubuntu 与 ROS2 环境配置](week1/README.md)
-- [Week 3：GitHub SSH、VS Code 与 ROS2 交互](week3/)
-- [Week 4：命令行、机器人基础与 Python 仿真](week4/)
-- [Week 5：Linux 目录操作与机器人运动学](week5/)
-- [Week 6：传感器介绍与 ROS2 KITTI 实验](week6/)
-- [Week 7：Markdown 与 GitHub 作业整理](week7/)
-- [Week 8：Docker 安装与 ROS2 桌面容器](week8/)
-- [Week 10：Docker 概念与 OpenCV 实验](week10/)
+
+- [Week 1：安装openclaw、python、ubuntu、ros2， 启动ros2](week1/README.md)
+- [Week 2：vs code 与wsl 交互、运行ros2](week2/README.md)
+- [Week 3：编程基础概念说明、机器人基础概念说明、运行python仿真机器人](week3/README.md)
+- [Week 4：在程序里感受坐标系、机器人的空间坐标](week4/README.md)
+- [Week 5：Linux 目录操作与机器人运动学](week5/README.md)
+- [Week 6：传感器介绍与 ROS2 KITTI 实验](week6/README.md)
+- [Week 7：Markdown 与 GitHub 作业整理](week7/README.md)
+- [Week 8：Docker 安装与 ROS2 桌面容器](week8/README.md)
+- [Week 9：Docker 概念与 OpenCV 实验](week9/README.md)
+- [Week 10：Docker 概念与 OpenCV 实验](week10/README.md)
+- [Week 11：Docker 概念与 OpenCV 实验](week11/README.md)
+- [Week 12：Docker 概念与 OpenCV 实验](week12/README.md)
+
 
 ## 关于我
 
-- 姓名：张三
-- 学号：2024xxxxx
-- 专业：计算机科学与技术
+- 姓名：王明（왕명）
+- 学号：20231890
+- 专业：软件工程
 
 ## 项目说明
 
 本项目使用 GitHub Pages 自动部署。
 
-在线访问：[https://你的用户名.github.io/仓库名/](https://你的用户名.github.io/仓库名/)
+在线访问：https://github.com/testerwm/ai-robot-wm
