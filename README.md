@@ -24,6 +24,8 @@
 - [Week 11：Docker 进阶与 GitHub Pages 网页部署](week11/README.md)
 - [Week 12：手机摄像头、ArUco 识别与距离测量](week12/README.md)
 - [Week 13：四足机器人入门与期末项目实施](week13/README.md)
+- [Week 14：网课-暂未上](week14/README.md)
+- [Week 15：本周上](week15/README.md)
 
 ## 关于我
 
