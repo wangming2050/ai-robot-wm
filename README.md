@@ -13,7 +13,7 @@
 
 ## 课程作业目录
 
-- [Week 1：OpenCLAW、Python、Ubuntu 与 ROS2 环境准备](week1/README.md)
+[//]: # (- [Week 1：OpenCLAW、Python、Ubuntu 与 ROS2 环境准备]&#40;week1/README.md&#41;)
 - [Week 2：WSL、Ubuntu 与 ROS2 环境配置](week2/README.md)
 - [Week 3：GitHub SSH、VS Code 与 ROS2 命令行交互](week3/README.md)
 - [Week 4：命令行、机器人基础概念与 Python 仿真](week4/README.md)
