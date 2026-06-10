@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Week 14 迷宫机器人遥控器</title>
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --panel: #ffffff;
+      --text: #172033;
+      --muted: #667085;
+      --line: #d8dee9;
+      --primary: #2563eb;
+      --danger: #dc2626;
+      --good: #059669;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    main { width: min(960px, 100%); margin: 0 auto; padding: 20px; }
+    header { margin-bottom: 18px; }
+    h1 { margin: 0 0 6px; font-size: 24px; line-height: 1.2; }
+    .subtitle { color: var(--muted); margin: 0; font-size: 14px; }
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(260px, 1fr) minmax(260px, 340px);
+      gap: 16px;
+      align-items: start;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+    }
+    canvas {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: white;
+      display: block;
+    }
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+    button {
+      min-height: 56px;
+      border: 0;
+      border-radius: 8px;
+      background: #e5e7eb;
+      color: var(--text);
+      font-size: 20px;
+      font-weight: 700;
+      touch-action: manipulation;
+    }
+    button.primary { background: var(--primary); color: white; }
+    button.danger { background: var(--danger); color: white; }
+    button.good { background: var(--good); color: white; }
+    .wide { grid-column: span 3; }
+    dl {
+      display: grid;
+      grid-template-columns: 96px 1fr;
+      gap: 8px 12px;
+      margin: 0;
+      font-size: 14px;
+    }
+    dt { color: var(--muted); }
+    dd { margin: 0; font-weight: 600; }
+    .log {
+      margin-top: 12px;
+      padding: 10px;
+      border-radius: 6px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      min-height: 48px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    @media (max-width: 720px) {
+      main { padding: 14px; }
+      .layout { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Week 14 迷宫机器人遥控器</h1>
+      <p class="subtitle">手机网页输入 -> Python 常驻桥接程序 -> 迷宫机器人状态更新</p>
+    </header>
+    <div class="layout">
+      <section class="panel">
+        <canvas id="maze" width="640" height="640" aria-label="迷宫俯视图"></canvas>
+      </section>
+      <section class="panel">
+        <dl>
+          <dt>连接</dt><dd id="connection">连接中</dd>
+          <dt>位置</dt><dd id="pose">-</dd>
+          <dt>朝向</dt><dd id="heading">-</dd>
+          <dt>模式</dt><dd id="mode">-</dd>
+          <dt>碰撞</dt><dd id="collisions">0</dd>
+          <dt>状态</dt><dd id="goal">探索中</dd>
+        </dl>
+        <div class="controls">
+          <span></span>
+          <button class="primary" data-command="forward">↑</button>
+          <span></span>
+          <button class="primary" data-command="left">←</button>
+          <button class="danger" data-command="stop">■</button>
+          <button class="primary" data-command="right">→</button>
+          <span></span>
+          <button class="primary" data-command="back">↓</button>
+          <span></span>
+          <button class="good wide" data-command="auto">自动探索 / 手动</button>
+          <button class="wide" data-command="reset">重置</button>
+        </div>
+        <div class="log" id="log">等待状态回传。</div>
+      </section>
+    </div>
+  </main>
+  <script>
+    const canvas = document.getElementById("maze");
+    const ctx = canvas.getContext("2d");
+    const fields = {
+      connection: document.getElementById("connection"),
+      pose: document.getElementById("pose"),
+      heading: document.getElementById("heading"),
+      mode: document.getElementById("mode"),
+      collisions: document.getElementById("collisions"),
+      goal: document.getElementById("goal"),
+      log: document.getElementById("log")
+    };
+    const headingIcon = { north: "↑", east: "→", south: "↓", west: "←" };
+
+    async function sendCommand(command) {
+      const res = await fetch("/command", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ command })
+      });
+      render(await res.json());
+    }
+
+    async function pollState() {
+      try {
+        const res = await fetch("/state");
+        fields.connection.textContent = "已连接";
+        render(await res.json());
+      } catch (err) {
+        fields.connection.textContent = "断开";
+        fields.log.textContent = "无法连接桥接程序：" + err.message;
+      }
+    }
+
+    function render(state) {
+      fields.pose.textContent = `(${state.robot.x}, ${state.robot.y})`;
+      fields.heading.textContent = `${headingIcon[state.robot.heading]} ${state.robot.heading}`;
+      fields.mode.textContent = state.auto ? "自动探索" : "手动遥控";
+      fields.collisions.textContent = state.collisions;
+      fields.goal.textContent = state.goal_reached ? "已到达终点" : "探索中";
+      fields.log.textContent = state.message || "状态正常。";
+
+      const rows = state.maze.length;
+      const cols = state.maze[0].length;
+      const cell = Math.min(canvas.width / cols, canvas.height / rows);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let y = 0; y < rows; y += 1) {
+        for (let x = 0; x < cols; x += 1) {
+          const tile = state.maze[y][x];
+          ctx.fillStyle = tile === "#" ? "#1f2937" : "#ffffff";
+          if (tile === "G") ctx.fillStyle = "#10b981";
+          ctx.fillRect(x * cell, y * cell, cell, cell);
+          ctx.strokeStyle = "#d8dee9";
+          ctx.strokeRect(x * cell, y * cell, cell, cell);
+        }
+      }
+      ctx.fillStyle = "#bfdbfe";
+      for (const p of state.trail) {
+        ctx.fillRect(p.x * cell + cell * 0.25, p.y * cell + cell * 0.25, cell * 0.5, cell * 0.5);
+      }
+      ctx.fillStyle = "#f97316";
+      ctx.beginPath();
+      ctx.arc(state.robot.x * cell + cell / 2, state.robot.y * cell + cell / 2, cell * 0.33, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#ffffff";
+      ctx.font = `${Math.floor(cell * 0.45)}px sans-serif`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(headingIcon[state.robot.heading], state.robot.x * cell + cell / 2, state.robot.y * cell + cell / 2);
+    }
+
+    for (const button of document.querySelectorAll("button[data-command]")) {
+      button.addEventListener("click", () => sendCommand(button.dataset.command));
+    }
+    pollState();
+    setInterval(pollState, 500);
+  </script>
+</body>
+</html>
