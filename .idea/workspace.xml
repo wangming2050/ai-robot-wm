@@ -6,11 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="664bf41e-13dd-4a22-aa7f-d6a0758ae69e" name="更改" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week13/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/week13/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week2/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/week2/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week3/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/week3/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week4/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/week4/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,6 +52,7 @@
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "Python.camera_bridge.executor": "Run",
+    "Python.opencv_color_demo.executor": "Run",
     "Python.quadruped_ppo_residual_stairs.executor": "Run",
     "Python.robot.executor": "Run",
     "Python.slow_walker.executor": "Run",
@@ -66,7 +62,7 @@
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "codex/week14-homework",
     "ignore.virus.scanning.warn.message": "true",
     "kronk.content.tree.expanded.paths": "",
     "last_opened_file_path": "C:/Users/China/Documents/git_project/ai-robot-wm/img/week14",
@@ -93,7 +89,7 @@
       <recent name="C:\Users\China\Documents\git_project\ai-robot-wm\week1\截图" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.opencv_color_demo">
     <configuration name="camera_bridge" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ai-robot-wm" />
       <option name="ENV_FILES" value="" />
@@ -109,6 +105,29 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="RUN_TOOL" value="" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/week13/camera_bridge.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="opencv_color_demo" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="ai-robot-wm" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/week10" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/week10/opencv_color_demo.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -186,6 +205,11 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.opencv_color_demo" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
