@@ -128,7 +128,7 @@ http://电脑IP:8014
 
 本周运行录屏如下：
 
-<video src="../img/week14/walk.mp4" controls width="700"></video>
+<video src="../img/week14/maze.mov" controls width="700"></video>
 
 ## 8. 问题与解决
 
