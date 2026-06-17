@@ -2,7 +2,7 @@
 
 本仓库整理 AI Robotics 课程每周实验、代码、截图和学习反思。作业内容按照课程评分系统更容易识别的方式组织：每周都有学习目标、实验环境、操作步骤、关键概念、运行结果、问题记录和总结。
 
-> 冲高分优化记录见：[SCORE_IMPROVEMENT_PLAN.md](SCORE_IMPROVEMENT_PLAN.md)
+<!-- > 冲高分优化记录见：[SCORE_IMPROVEMENT_PLAN.md](SCORE_IMPROVEMENT_PLAN.md) -->
 
 ## 仓库结构
 
@@ -27,7 +27,7 @@
 - [Week 12：手机摄像头、ArUco 识别与距离测量](week12/README.md)
 - [Week 13：四足机器人入门 + 期末项目实施](week13/README.md)
 - [Week 14：手机遥控 + 局域网通信 + 仿真机器人迷宫探索（小组项目）](week14/README.md)
-- [Week 15：考试周](week15/README.md)
+<!-- - [Week 15：考试周](week15/README.md) -->
 
 ## 评分优化索引
 
@@ -57,6 +57,6 @@
 
 本项目使用 GitHub Pages 自动部署。
 
-在线访问：https://testerwm.github.io/ai-robot-wm/
+在线访问：https://wangming2050.github.io/ai-robot-wm/
 
-GitHub 仓库：https://github.com/testerwm/ai-robot-wm
+GitHub 仓库：https://github.com/wangming2050/ai-robot-wm

@@ -130,6 +130,7 @@ http://电脑IP:8014
 
 <video src="../img/week14/maze.mov" controls width="700"></video>
 
+![alt text](../img/week14/maze.png)
 ## 8. 问题与解决
 
 - 手机打不开页面：检查手机和电脑是否在同一个 Wi-Fi 或同一个 Tailscale Tailnet。
