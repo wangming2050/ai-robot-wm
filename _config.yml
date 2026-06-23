@@ -12,3 +12,9 @@ theme: jekyll-theme-architect
 
 # 显示下载按钮（可选）
 show_downloads: false
+
+# Week14 的 index.html 是本地 server.py 启动后的手机遥控器入口。
+# GitHub Pages 不能启动后端服务，展示页应继续使用 week14/README.md，
+# 因此构建站点时排除该文件，让 /week14/ 像其他周一样渲染 README。
+exclude:
+  - week14/index.html
