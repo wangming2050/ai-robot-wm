@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Week 14 手机遥控迷宫机器人</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --panel: #ffffff;
+      --ink: #172033;
+      --muted: #667085;
+      --line: #d8dee9;
+      --blue: #2563eb;
+      --red: #dc2626;
+      --green: #059669;
+      --amber: #f59e0b;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      overflow-x: hidden;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    main {
+      width: min(1040px, 100%);
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header { margin-bottom: 18px; }
+    h1 { margin: 0 0 6px; font-size: 26px; line-height: 1.2; }
+    .subtitle { color: var(--muted); margin: 0; font-size: 14px; overflow-wrap: anywhere; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(280px, 1fr) minmax(280px, 360px);
+      gap: 16px;
+      align-items: start;
+      min-width: 0;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+      min-width: 0;
+    }
+
+    canvas {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      display: block;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: white;
+    }
+
+    dl {
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: 8px 12px;
+      margin: 0;
+      font-size: 14px;
+    }
+
+    dt { color: var(--muted); }
+    dd { margin: 0; font-weight: 700; }
+
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    button {
+      min-height: 58px;
+      border: 0;
+      border-radius: 8px;
+      background: #e5e7eb;
+      color: var(--ink);
+      font-size: 22px;
+      font-weight: 800;
+      touch-action: manipulation;
+    }
+
+    button:active { transform: translateY(1px); }
+    button.primary { background: var(--blue); color: white; }
+    button.danger { background: var(--red); color: white; }
+    button.good { background: var(--green); color: white; }
+    button.plan { background: var(--amber); color: #111827; }
+    .wide { grid-column: span 3; }
+
+    .log {
+      margin-top: 12px;
+      min-height: 48px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #f8fafc;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 720px) {
+      main { padding: 14px; }
+      .layout { grid-template-columns: 1fr; }
+      h1 { font-size: 23px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Week 14 手机遥控迷宫机器人</h1>
+      <p class="subtitle">手机网页输入 -> Python server.py 常驻程序 -> BFS 自动探索 -> 路径可视化</p>
+    </header>
+    <div class="layout">
+      <section class="panel">
+        <canvas id="maze" width="720" height="720" aria-label="迷宫地图和机器人路径"></canvas>
+      </section>
+      <section class="panel">
+        <dl>
+          <dt>连接</dt><dd id="connection">连接中</dd>
+          <dt>位置</dt><dd id="pose">-</dd>
+          <dt>朝向</dt><dd id="heading">-</dd>
+          <dt>模式</dt><dd id="mode">-</dd>
+          <dt>碰撞</dt><dd id="collisions">0</dd>
+          <dt>前方</dt><dd id="front">-</dd>
+          <dt>状态</dt><dd id="goal">探索中</dd>
+        </dl>
+        <div class="controls">
+          <span></span>
+          <button class="primary" data-command="forward" aria-label="前进">↑</button>
+          <span></span>
+          <button class="primary" data-command="left" aria-label="左转">←</button>
+          <button class="danger" data-command="stop" aria-label="停止">■</button>
+          <button class="primary" data-command="right" aria-label="右转">→</button>
+          <span></span>
+          <button class="primary" data-command="back" aria-label="后退">↓</button>
+          <span></span>
+          <button class="good wide" data-command="auto">BFS 自动探索 / 手动</button>
+          <button class="plan wide" data-command="explore">重新规划最短路径</button>
+          <button class="wide" data-command="reset">重置</button>
+        </div>
+        <div class="log" id="log">等待状态回传。</div>
+      </section>
+    </div>
+  </main>
+  <script>
+    const canvas = document.getElementById("maze");
+    const ctx = canvas.getContext("2d");
+    const fields = {
+      connection: document.getElementById("connection"),
+      pose: document.getElementById("pose"),
+      heading: document.getElementById("heading"),
+      mode: document.getElementById("mode"),
+      collisions: document.getElementById("collisions"),
+      front: document.getElementById("front"),
+      goal: document.getElementById("goal"),
+      log: document.getElementById("log")
+    };
+    const headingIcon = { north: "↑", east: "→", south: "↓", west: "←" };
+
+    async function sendCommand(command) {
+      const res = await fetch("/command", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ command })
+      });
+      render(await res.json());
+    }
+
+    async function pollState() {
+      try {
+        const res = await fetch("/state");
+        fields.connection.textContent = "已连接";
+        render(await res.json());
+      } catch (err) {
+        fields.connection.textContent = "断开";
+        fields.log.textContent = "无法连接 server.py：" + err.message;
+      }
+    }
+
+    function render(state) {
+      fields.pose.textContent = `(${state.robot.x}, ${state.robot.y})`;
+      fields.heading.textContent = `${headingIcon[state.robot.heading]} ${state.robot.heading}`;
+      fields.mode.textContent = state.auto ? "BFS 自动探索" : "手动遥控";
+      fields.collisions.textContent = state.collisions;
+      fields.front.textContent = state.front_blocked ? "障碍 / 墙体" : "可通行";
+      fields.goal.textContent = state.goal_reached ? "已到达终点" : "探索中";
+      fields.log.textContent = state.message || "状态正常。";
+
+      const rows = state.maze.length;
+      const cols = state.maze[0].length;
+      const cell = Math.min(canvas.width / cols, canvas.height / rows);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let y = 0; y < rows; y += 1) {
+        for (let x = 0; x < cols; x += 1) {
+          const tile = state.maze[y][x];
+          ctx.fillStyle = tile === "#" ? "#1f2937" : "#ffffff";
+          if (tile === "S") ctx.fillStyle = "#dbeafe";
+          if (tile === "G") ctx.fillStyle = "#34d399";
+          ctx.fillRect(x * cell, y * cell, cell, cell);
+          ctx.strokeStyle = "#d8dee9";
+          ctx.strokeRect(x * cell, y * cell, cell, cell);
+        }
+      }
+
+      drawPoints(state.planned_path || [], cell, "#fde68a", 0.42);
+      drawPoints(state.trail || [], cell, "#bfdbfe", 0.48);
+
+      ctx.fillStyle = "#f97316";
+      ctx.beginPath();
+      ctx.arc(state.robot.x * cell + cell / 2, state.robot.y * cell + cell / 2, cell * 0.34, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#ffffff";
+      ctx.font = `${Math.floor(cell * 0.46)}px sans-serif`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(headingIcon[state.robot.heading], state.robot.x * cell + cell / 2, state.robot.y * cell + cell / 2);
+    }
+
+    function drawPoints(points, cell, color, scale) {
+      ctx.fillStyle = color;
+      for (const p of points) {
+        const size = cell * scale;
+        ctx.fillRect(p.x * cell + (cell - size) / 2, p.y * cell + (cell - size) / 2, size, size);
+      }
+    }
+
+    for (const button of document.querySelectorAll("button[data-command]")) {
+      button.addEventListener("click", () => sendCommand(button.dataset.command));
+    }
+    pollState();
+    setInterval(pollState, 500);
+  </script>
+</body>
+</html>
