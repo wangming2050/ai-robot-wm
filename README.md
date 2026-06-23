@@ -45,7 +45,7 @@
 | Week 11 | Docker 进阶与 Pages 部署 | `week11/README.md` | Docker 镜像与 Pages 截图 |
 | Week 12 | 手机摄像头与 ArUco 距离估计 | `week12/aruco_distance_estimator.py` | ArUco / 摄像头截图 |
 | Week 13 | 四足机器人步态与项目实施 | `week13/demos/`, `week13/quadruped_ppo_residual_stairs.py` | 步态视频、训练资源 |
-| Week 14 | 手机遥控与迷宫探索 | `week14/maze_remote_sim.py`, `week14/remote_controller.html` | 迷宫遥控视频 |
+| Week 14 | 手机遥控与迷宫探索 | `week14/server.py`, `week14/index.html`, `week14/maze.py`, `week14/explorer.py` | 迷宫遥控视频、BFS 路径 |
 
 ## 关于我
 
